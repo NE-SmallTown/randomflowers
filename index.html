@@ -4,11 +4,131 @@
     <meta charset="UTF-8">
     <title>Random Flowers</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .root {
+            height: 100vh;
+            padding: 0 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .btns-area {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-item {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #ff6c42;
+            font-size: 20px;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .result-wrap {
+            width: 100%;
+            margin: 30px;
+        }
+
+        .result-item {
+            font-size: 18px;
+            color: #ff9768;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
+    <div class="root">
+        <div class="btns-area">
+            <div class="btn-item">Word</div>
+        </div>
 
-    <script>
+        <div class="result-wrap">
 
+        </div>
+    </div>
+
+    <script type="module">
+      // 一次最多拼接多少个 word
+      const MAX_RANDOM_AMOUNT_WORD_PER_TIME = 6;
+
+      const fetchWord = (() => {
+        let wordArr;
+
+        return async () => {
+          if (wordArr) {
+            return wordArr;
+          }
+
+          wordArr = await fetch('https://raw.githubusercontent.com/NE-SmallTown/randomflowers/main/data-common/word.json')
+            .then(res => res.json());
+
+          return wordArr;
+        }
+      })();
+
+      const generateRandom = (data, amount = 2) => {
+        const randoms = [];
+
+        for (let i = 0; i < amount; i++) {
+          const randomIndex = Math.round(Math.random() * data.length);
+          const randomItem = data[randomIndex];
+
+          randoms.push(randomItem);
+        }
+
+        return randoms;
+      };
+
+      function main() {
+        document.querySelectorAll('.btn-item').forEach(btnItemDOM => {
+          btnItemDOM.addEventListener('click', async () => {
+            const wordArr = await fetchWord();
+            const wordAmount = Math.max(1, Math.round(Math.random() * MAX_RANDOM_AMOUNT_WORD_PER_TIME));
+            const randomsWordArr = generateRandom(wordArr, wordAmount);
+
+            // TODO 每个 word hover 上去的时候显示 word.more 和 word.explanation
+            const finalWords = randomsWordArr.reduce(
+              (ret, wordItem) => {
+                ret += wordItem.word;
+
+                return ret;
+              },
+              '',
+            );
+
+            document.querySelector('.result-wrap').innerHTML = '';
+
+            const finalWordsDOM = document.createElement('div');
+            finalWordsDOM.className = 'result-item';
+            finalWordsDOM.innerHTML = finalWords;
+
+            document.querySelector('.result-wrap').appendChild(finalWordsDOM);
+          })
+        });
+      }
+
+      main();
     </script>
 </body>
 </html>
