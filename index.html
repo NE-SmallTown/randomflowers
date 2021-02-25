@@ -81,7 +81,7 @@
 
     <script type="module">
       // 一次最多拼接多少个 word
-      const MAX_RANDOM_AMOUNT_WORD_PER_TIME = 6;
+      const MAX_RANDOM_AMOUNT_WORD_PER_TIME = 7;
 
       const fetchWord = (() => {
         let wordArr;
@@ -120,7 +120,6 @@
 
             document.querySelector('.result-wrap').innerHTML = '';
 
-            // TODO 每个 word hover 上去的时候显示 word.more 和 word.explanation
             // TODO 增加对诗/歌的 random（word 也可以直接从诗里选）https://github.com/fighting41love/funNLP/tree/master/data/%E5%8F%A4%E8%AF%97%E8%AF%8D%E5%BA%93
             // TODO 增加每隔 5s 自动刷新
             randomsWordArr.forEach(
