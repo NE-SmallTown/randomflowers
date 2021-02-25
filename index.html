@@ -18,9 +18,9 @@
 
         .root {
             height: 100vh;
-            padding: 0 100px;
+            padding: 100px 100px 0;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             flex-direction: column;
         }
@@ -46,14 +46,23 @@
         .result-wrap {
             width: 100%;
             margin: 30px;
-        }
-
-        .result-item {
-            font-size: 18px;
-            color: #ff9768;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .result-word-item {
+            font-size: 18px;
+            color: #ff9768;
+        }
+
+        .result-word-desc {
+            font-size: 18px;
+            color: #ea5656;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 2;
         }
     </style>
 </head>
@@ -66,6 +75,8 @@
         <div class="result-wrap">
 
         </div>
+
+        <div class="result-word-desc"></div>
     </div>
 
     <script type="module">
@@ -107,23 +118,26 @@
             const wordAmount = Math.max(1, Math.round(Math.random() * MAX_RANDOM_AMOUNT_WORD_PER_TIME));
             const randomsWordArr = generateRandom(wordArr, wordAmount);
 
-            // TODO 每个 word hover 上去的时候显示 word.more 和 word.explanation
-            const finalWords = randomsWordArr.reduce(
-              (ret, wordItem) => {
-                ret += wordItem.word;
-
-                return ret;
-              },
-              '',
-            );
-
             document.querySelector('.result-wrap').innerHTML = '';
 
-            const finalWordsDOM = document.createElement('div');
-            finalWordsDOM.className = 'result-item';
-            finalWordsDOM.innerHTML = finalWords;
+            // TODO 每个 word hover 上去的时候显示 word.more 和 word.explanation
+            // TODO 增加对诗/歌的 random（word 也可以直接从诗里选）https://github.com/fighting41love/funNLP/tree/master/data/%E5%8F%A4%E8%AF%97%E8%AF%8D%E5%BA%93
+            // TODO 增加每隔 5s 自动刷新
+            randomsWordArr.forEach(
+              (wordItem, index) => {
+                const wordItemElement = document.createElement('div');
 
-            document.querySelector('.result-wrap').appendChild(finalWordsDOM);
+                wordItemElement.className = 'result-word-item';
+                wordItemElement.innerHTML = wordItem.word;
+                wordItemElement.setAttribute('word-index', index);
+
+                document.querySelector('.result-wrap').appendChild(wordItemElement);
+
+                wordItemElement.addEventListener('mouseover', () => {
+                  document.querySelector('.result-word-desc').innerHTML = wordItem.explanation;
+                });
+              },
+            );
           })
         });
       }
