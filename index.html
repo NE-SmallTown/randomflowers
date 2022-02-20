@@ -91,7 +91,7 @@
             return wordArr;
           }
 
-          wordArr = await fetch('https://raw.githubusercontent.com/NE-SmallTown/randomflowers/main/data-common/word.json')
+          wordArr = await fetch('https://raw.githubusercontent.com/NE-SmallTown/randomflowers/main/data-common/word-shi.json')
             .then(res => res.json());
 
           return wordArr;
@@ -132,9 +132,9 @@
 
                 document.querySelector('.result-wrap').appendChild(wordItemElement);
 
-                wordItemElement.addEventListener('mouseover', () => {
-                  document.querySelector('.result-word-desc').innerHTML = wordItem.explanation;
-                });
+                // wordItemElement.addEventListener('mouseover', () => {
+                //   document.querySelector('.result-word-desc').innerHTML = wordItem.explanation;
+                // });
               },
             );
           })
