@@ -31,8 +31,8 @@
         }
 
         .btn-item {
-            width: 100px;
-            height: 100px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background-color: #ff6c42;
             font-size: 20px;
@@ -91,7 +91,9 @@
             return wordArr;
           }
 
-          wordArr = await fetch('https://raw.githubusercontent.com/NE-SmallTown/randomflowers/main/data-common/word.json')
+          const fileName = (new URLSearchParams(location.search)).get('f') || 'word-shi.json';
+
+          wordArr = await fetch(`https://raw.githubusercontent.com/NE-SmallTown/randomflowers/main/data-common/${fileName}`)
             .then(res => res.json());
 
           return wordArr;
@@ -139,6 +141,10 @@
             );
           })
         });
+
+        window.freshWordTimer = setInterval(() => {
+          document.querySelector('.btn-item').click();
+        }, 5000);
       }
 
       main();
