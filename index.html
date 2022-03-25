@@ -28,6 +28,8 @@
         .btns-area {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            width: 40%;
         }
 
         .btn-item {
@@ -38,7 +40,7 @@
             font-size: 20px;
             color: #fff;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             cursor: pointer;
         }
@@ -69,14 +71,22 @@
 <body>
     <div class="root">
         <div class="btns-area">
-            <div class="btn-item">Word</div>
+            <div class="btn-item">
+                <div>Word</div>
+
+                <div class="result-wrap"></div>
+
+                <div class="result-word-desc"></div>
+            </div>
+
+            <div class="btn-item">
+                <div>Word</div>
+
+                <div class="result-wrap"></div>
+
+                <div class="result-word-desc"></div>
+            </div>
         </div>
-
-        <div class="result-wrap">
-
-        </div>
-
-        <div class="result-word-desc"></div>
     </div>
 
     <script type="module">
@@ -120,7 +130,7 @@
             const wordAmount = Math.max(1, Math.round(Math.random() * MAX_RANDOM_AMOUNT_WORD_PER_TIME));
             const randomsWordArr = generateRandom(wordArr, wordAmount);
 
-            document.querySelector('.result-wrap').innerHTML = '';
+            btnItemDOM.querySelector('.result-wrap').innerHTML = '';
 
             // TODO 增加对诗/歌的 random（word 也可以直接从诗里选）https://github.com/fighting41love/funNLP/tree/master/data/%E5%8F%A4%E8%AF%97%E8%AF%8D%E5%BA%93
             // TODO 增加每隔 5s 自动刷新
@@ -132,10 +142,10 @@
                 wordItemElement.innerHTML = wordItem.word;
                 wordItemElement.setAttribute('word-index', index);
 
-                document.querySelector('.result-wrap').appendChild(wordItemElement);
+                btnItemDOM.querySelector('.result-wrap').appendChild(wordItemElement);
 
                 wordItemElement.addEventListener('mouseover', () => {
-                  document.querySelector('.result-word-desc').innerHTML = wordItem.explanation;
+                  btnItemDOM.querySelector('.result-word-desc').innerHTML = wordItem.explanation;
                 });
               },
             );
@@ -143,7 +153,9 @@
         });
 
         window.freshWordTimer = setInterval(() => {
-          document.querySelector('.btn-item').click();
+          document.querySelectorAll('.btn-item').forEach(btnItemDOM => {
+            btnItemDOM.click();
+          });
         }, 5000);
       }
 
